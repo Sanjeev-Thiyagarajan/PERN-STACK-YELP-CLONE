@@ -15,15 +15,23 @@ const AddReview = () => {
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
-    try {
-      const response = await RestaurantFinder.post(`/${id}/addReview`, {
-        name,
-        review: reviewText,
-        rating,
-      });
-      history.push("/");
-      history.push(location.pathname);
-    } catch (err) {}
+    
+    // Name and reviewText is Required => It's shouldn't empty and not just whitespace
+    if ((/\S/.test(name)) && (/\S/.test(reviewText))) {
+      console.log(name)
+      try {
+        await RestaurantFinder.post(`/${id}/addReview`, {
+          name,
+          review: reviewText,
+          rating,
+        });
+        history.push("/");
+        history.push(location.pathname);
+      } catch (err) {}
+    }else {
+      console.log("Fill the Required fields")
+    }
+    
   };
   return (
     <div className="mb-2">

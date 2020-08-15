@@ -17,12 +17,12 @@ const RestaurantList = (props) => {
     };
 
     fetchData();
-  }, []);
+  }, [setRestaurants]);
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     try {
-      const response = await RestaurantFinder.delete(`/${id}`);
+      await RestaurantFinder.delete(`/${id}`);
       setRestaurants(
         restaurants.filter((restaurant) => {
           return restaurant.id !== id;

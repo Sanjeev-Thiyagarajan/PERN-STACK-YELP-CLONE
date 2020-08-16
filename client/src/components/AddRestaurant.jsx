@@ -48,7 +48,7 @@ const AddRestaurant = () => {
             <select
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
-              className="custom-select my-1 mr-sm-2"
+              className="custom-select mr-sm-2"
             >
               <option disabled>Price Range</option>
               <option value="1">$</option>

@@ -49,7 +49,7 @@ const RestaurantList = (props) => {
     return (
       <>
         <StarRating rating={restaurant.id} />
-        <span className="text-warning ml-1">({restaurant.count})</span>
+        <span className="text-warning ml-1">({restaurant.average_rating})</span>
       </>
     );
   };
@@ -77,8 +77,8 @@ const RestaurantList = (props) => {
                 >
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
-                  <td>{"$".repeat(restaurant.price_range)}</td>
-                  <td>{renderRating(restaurant)}</td>
+                  <td>{"$".repeat(restaurant.price_range)}</td> 
+                  <td>{renderRating(restaurant.average_rating)}</td>
                   <td>
                     <button
                       onClick={(e) => handleUpdate(e, restaurant.id)}
@@ -92,7 +92,7 @@ const RestaurantList = (props) => {
                       onClick={(e) => handleDelete(e, restaurant.id)}
                       className="btn btn-danger"
                     >
-                      Delete
+                      Delete   
                     </button>
                   </td>
                 </tr>

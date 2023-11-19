@@ -1,0 +1,48 @@
+
+  
+  .container1 img {
+    width: 120%;
+    margin-left: -10%;
+    margin-right: 0;
+  }
+  
+  .container1 .btn1 {
+    position: absolute;
+    width: max-content;
+    top: 88%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .container1 .btn2 {
+    position: absolute;
+    top: 88%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .container1 .btn1:hover {
+    background-color: red;
+  }
+
+  .container1 .btn2:hover {
+    background-color: red;
+  }

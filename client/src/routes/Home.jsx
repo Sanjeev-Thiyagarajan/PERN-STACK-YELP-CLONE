@@ -1,15 +1,29 @@
 import React from "react";
-import Header from "../components/Header";
-import AddRestaurant from "../components/AddRestaurant";
-import RestaurantList from "../components/RestaurantList";
+import UMHeader from "../components/UM/UMHeader";
+import AddUserMaster from "../components/UM/AddUserMaster";
+import UserMasterList from "../components/UM/UserMasterList";
+import BgImage from '../y4j bg.png';
+import '../css/Home.css'
+import { useParams, useHistory } from "react-router-dom";
 
 const Home = () => {
+  let history = useHistory();
+  function handleUMRoute() {
+    history.push("/userMasters");
+  }
+  function handleCustRoute() {
+    history.push("/customers");
+  }
   return (
-    <div>
-      <Header />
-      <AddRestaurant />
-      <RestaurantList />
+    <>
+    
+    <UMHeader />  
+    <div className="container1">
+      <img src={BgImage}  class="d-inline-block align-top" alt="Y4jBgImage"/>
+      <button className="btn1" onClick={handleUMRoute}>User Masters</button>
+      <button className="btn2" onClick={handleCustRoute}>Customers</button>
     </div>
+    </>
   );
 };
 

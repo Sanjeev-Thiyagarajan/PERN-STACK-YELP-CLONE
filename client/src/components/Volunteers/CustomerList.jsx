@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import BasePath from "../../apis/BasePath";
 import { UserMasterContext } from "../../context/UserMasterContext";
 import { useHistory } from "react-router-dom";
-import $ from 'jquery';
+// import $ from 'jquery';
 // import StarRating from "./StarRating";
 
 // $(document).ready(function () {
@@ -17,7 +17,7 @@ import $ from 'jquery';
 // });
 
 
-const UserMasterList = (props) => {
+const VolunteerList = (props) => {
   const { userMasters, setUserMasters } = useContext(UserMasterContext);
   let history = useHistory();
   useEffect(() => {
@@ -178,4 +178,4 @@ const UserMasterList = (props) => {
   );
 };
 
-export default UserMasterList;
+export default VolunteerList;

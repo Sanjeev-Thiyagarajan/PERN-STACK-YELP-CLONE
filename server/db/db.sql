@@ -1,5 +1,5 @@
 CREATE TABLE user_master (
-    um_seq BIGSERIAL NOT NULL PRIMARY KEY,
+    um_seq BIGSERIAL PRIMARY KEY,
     um_login_id VARCHAR(20) NOT NULL,
     um_password VARCHAR(20) NOT NULL,
     um_role NUMBER,

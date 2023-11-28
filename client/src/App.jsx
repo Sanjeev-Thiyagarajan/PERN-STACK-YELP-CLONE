@@ -13,6 +13,8 @@ import CustomerDetailPage from "./components/Customers/CustomerDetailPage";
 import UMHeader from "./components/UM/UMHeader";
 import CustomerList from "./components/Customers/CustomerList";
 import './css/App.css';
+import LoginPage from "./routes/LoginPage";
+import RegisterForm from "./routes/RegisterForm";
 const App = () => {
   return (
     <>
@@ -23,7 +25,11 @@ const App = () => {
       <div className="container">
         <Router>
           <Switch>
-            <Route exact path="/" component={Home} />
+            
+          <Route exact path="/register" component={RegisterForm} />
+            <Route exact path="/" component={LoginPage} />
+            
+            <Route exact path="/home" component={Home} />
             <Route exact path="/userMasters" >
                 <AddUserMaster/>
                 <UserMasterList/>

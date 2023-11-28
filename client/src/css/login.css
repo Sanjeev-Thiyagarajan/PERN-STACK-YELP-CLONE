@@ -1,0 +1,117 @@
+body{
+    padding:0;
+    margin:0;
+    background-repeat:no-repeat;
+    background-size:cover;
+  }
+  .vid-container{
+    position:relative;
+    height:100vh;
+    overflow:hidden;
+    border: 2px solid black;
+  }
+  .bgvid.back {
+    position: fixed; right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto; z-index: -100;
+  }
+  .inner {
+    position: absolute;
+  }
+  .inner-container{
+    border: 1rem black;
+    width:500px;
+    height:400px;
+    position:absolute;
+    top:calc(45vh - 200px);
+    left:calc(45vw - 200px);
+    border-radius:12px;
+    /* border: 0.5px  solid black; */
+    overflow:hidden;transition:1s;
+    box-shadow:0px 0px 50px rgb(150, 149, 149);
+    background-color: white;
+      
+  }
+  .col-sm{
+    display:block;
+    width:200px;
+    margin: 15px;
+    margin-left: 40px;
+    padding-top: 15px;
+    background:rgba(255, 253, 253, 0.911);
+    color:black;
+  }
+  .box {
+    position:absolute;
+    height:100%;
+    width:100%; 
+    font-family:Helvetica;
+    background:white;
+    padding:30px 0px;
+    border-width: 2px;
+  }
+  .inner-container h1{
+    color: black;
+    margin:30px 0;
+    font-size:30px;
+    text-align: left;
+    padding-left: 15%;
+  }
+  .inner-container input{
+    /* font-family: Arial, Helvetica, sans-serif; */
+    display:block;
+    width:300px;
+    margin-left: -150px;
+    padding:10px;
+    background:rgba(255, 253, 253, 0.911);
+    color:black;
+    border: 1px solid black;
+  }
+  .inner-container input:focus,.inner-container input:active,.inner-container button:focus,.inner-container button:active{
+    outline: 2px red;
+  }
+  .inner-container button{
+    background:rgb(255, 0, 0);
+    border:1px;
+    padding:10px;
+    font-size:20px;
+    width:330px;
+    margin:20px auto;
+    display:block;
+    cursor:pointer;transition:1s;
+    color: white
+  }
+  .inner-container button:hover{
+    border: 1px solid black
+
+  }
+  .inner-container p{
+    font-size:14px;
+    text-align:center;
+  }
+  .inner-container p span{
+    cursor:pointer;
+    color:#666;
+  }
+  .inner-container hr{
+    margin-top: -25px;
+    border: 1px solid black;
+  }
+  /* .inner-container .row1{
+    padding: 1rem;
+    display: inline-block;
+  }
+  
+  .inner-container .row2{
+    padding: 1rem;
+    display: inline-block;
+  } */
+
+  .inner-container .col-lg{
+    /* margin: 15px; */
+    margin-left: 100px;
+    margin-right: -450px;
+    font-size: small;
+    color: black;
+
+  }

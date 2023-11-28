@@ -12,5 +12,20 @@ h4{
     margin-top: 65px;
     height: 30px;
     padding-left: 5px;
-    justify-content: baseline; 
+    justify-content: baseline;
+    background-color: rgb(235, 234, 234);
 }
+
+.form-label {
+    font-size: 13px;
+    margin-bottom: 0px
+  }
+  .form-label::after{
+    content:"*";
+    color:red;
+  }
+  .btn-primary:hover{
+    background-color: red;
+    border-color: red;
+    /* outline-color: red;   */
+  }

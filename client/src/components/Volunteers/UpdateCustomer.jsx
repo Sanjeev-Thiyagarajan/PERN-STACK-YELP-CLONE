@@ -1,10 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+// import { CustomerContext } from "../context/CustomerContext";
 import BasePath from "../../apis/BasePath";
-import { CustomerContext } from "../../context/CustomerContext";
 
-const AddCustomer = () => {
-  const { addCustomers } = useContext(CustomerContext);
-  const [customer_id, setCustomerId] = useState(0);
+const UpdateCustomer = (props) => {
+  const { customer_id } = useParams();
+  let history = useHistory();
+  // const { userMasters } = useContext(UserMasterContext);
+  // const { addUserMasters } = useContext(UserMasterContext);
+  const [customerId, setCustomerId] = useState(0);
   const [sales_rep_emp_num, setSalesRepEmpNum] = useState(0);
   const [cust_first_name, setCustFirstName] = useState("");
   const [cust_last_name, setCustLastName] = useState("");
@@ -30,32 +34,103 @@ const AddCustomer = () => {
   const [cust_type_disability, setCustTypeDisability] = useState("");
   const [cust_percent_disability, setCustPercentDisability] = useState(0);
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await BasePath.get(`/customers/${customer_id}`);
+      console.log(response.data.data);
+      setCustomerId(response.data.data.Customers.customer_id);
+      setSalesRepEmpNum(response.data.data.Customers.sales_rep_emp_num);
+      setCustFirstName(response.data.data.Customers.cust_first_name);
+      setCustLastName(response.data.data.Customers.cust_last_name);
+      setCustMotherName(response.data.data.Customers.cust_mother_name);
+      setCustFatherName(response.data.data.Customers.cust_father_name);
+      setCustSpouseName(response.data.data.Customers.cust_spouse_name);
+      setCustDob(response.data.data.Customers.cust_dob);
+      setCustGender(response.data.data.Customers.cust_gender);
+      setCustMaritialSts(response.data.data.Customers.cust_maritial_sts);
+      setCustPhone(response.data.data.Customers.cust_phone);
+      setCustMobile(response.data.data.Customers.cust_mobile);
+      setCustAltMobile(response.data.data.Customers.cust_alt_mobile);
+      setCustFax(response.data.data.Customers.cust_fax);
+      setCustEmail(response.data.data.Customers.cust_email);
+      setCustIsDisable(response.data.data.Customers.cust_is_disable);
+      setCustEduQualification(response.data.data.Customers.cust_edu_qualification);
+      setCustOccupation(response.data.data.Customers.cust_occupation);
+      setCustPan(response.data.data.Customers.cust_pan);
+      setCustAadhar(response.data.data.Customers.cust_aadhar);
+      setCustPassport(response.data.data.Customers.cust_passport);
+      setCustRegDate(response.data.data.Customers.cust_reg_date);
+      setCustDisability(response.data.data.Customers.cust_disability);
+      setCustTypeDisability(response.data.data.Customers.cust_type_disability);
+      setCustPercentDisability(response.data.data.Customers.cust_percent_disability);      
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await BasePath.post("/customers", {
-        customer_id, sales_rep_emp_num, cust_first_name, cust_last_name,
-        cust_father_name, cust_mother_name, cust_spouse_name, cust_dob,
-        cust_gender, cust_maritial_sts, cust_phone, cust_mobile, cust_alt_mobile,
-        cust_fax, cust_email, cust_is_disable, cust_edu_qualification, cust_occupation,
-        cust_pan, cust_aadhar, cust_passport, cust_reg_date, cust_disability,
-        cust_type_disability, cust_percent_disability
-      });
-      console.log(response.data.data);
-      addCustomers(response.data.data.Customers);
-    } catch (err) {
-      console.log(err);
-    }
+    // const updatedUserMaster = 
+    await BasePath.put(`/customers/${customer_id}`, {
+      customer_id, sales_rep_emp_num, cust_first_name, cust_last_name,
+      cust_father_name, cust_mother_name, cust_spouse_name, cust_dob,
+      cust_gender, cust_maritial_sts, cust_phone, cust_mobile, cust_alt_mobile,
+      cust_fax, cust_email, cust_is_disable, cust_edu_qualification, cust_occupation,
+      cust_pan, cust_aadhar, cust_passport, cust_reg_date, cust_disability,
+      cust_type_disability, cust_percent_disability
+    });
+    history.push("/customers");
   };
+
   return (
     <>
-    <h4>Add A Candidate</h4>
+    <h4>
+      Updating {cust_first_name +" "+cust_last_name}'s Data
+    </h4>
     <div className="mb-4">
+      {/* <form action="">
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            id="name"
+            className="form-control"
+            type="text"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="location">Location</label>
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            id="location"
+            className="form-control"
+            type="text"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="price_range">Price Range</label>
+          <input
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+            id="price_range"
+            className="form-control"
+            type="number"
+          />
+        </div>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="btn btn-primary"
+        >
+          Submit
+        </button>
+      </form> */}
       <form action="">
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Customer ID</label>
             <input
               value={customer_id}
               onChange={(e) => setCustomerId(e.target.value)}
@@ -65,7 +140,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Sales Rep. Emp Num</label>
             <input
               value={sales_rep_emp_num}
               onChange={(e) => setSalesRepEmpNum(e.target.value)}
@@ -75,7 +149,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">First Name</label>
             <input
               value={cust_first_name}
               onChange={(e) => setCustFirstName(e.target.value)}
@@ -99,7 +172,6 @@ const AddCustomer = () => {
             </select>
           </div> */}
           <div className="col">
-          <label class="form-label">Last Name</label>
             <input
               value={cust_last_name}
               onChange={(e) => setCustLastName(e.target.value)}
@@ -111,7 +183,6 @@ const AddCustomer = () => {
         </div>
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Mother Name</label>
             <input
               value={cust_mother_name}
               onChange={(e) => setCustMotherName(e.target.value)}
@@ -121,7 +192,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Father Name</label>
             <input
               value={cust_father_name}
               onChange={(e) => setCustFatherName(e.target.value)}
@@ -131,7 +201,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Spouse Name</label>
             <input
               value={cust_spouse_name}
               onChange={(e) => setCustSpouseName(e.target.value)}
@@ -141,7 +210,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Date of Birth</label>
             <input
               value={cust_dob}
               onChange={(e) => setCustDob(e.target.value)}
@@ -153,7 +221,6 @@ const AddCustomer = () => {
         </div>
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Gender</label>
             <input
               value={cust_gender}
               onChange={(e) => setCustGender(e.target.value)}
@@ -163,7 +230,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Maritial Status</label>
             <input
               value={cust_maritial_sts}
               onChange={(e) => setCustMaritialSts(e.target.value)}
@@ -173,7 +239,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Phone Number</label>
             <input
               value={cust_phone}
               onChange={(e) => setCustPhone(e.target.value)}
@@ -183,7 +248,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Mobile</label>
             <input
               value={cust_mobile}
               onChange={(e) => setCustMobile(e.target.value)}
@@ -194,7 +258,6 @@ const AddCustomer = () => {
           </div>
         </div><div className="form-row">
           <div className="col">
-          <label class="form-label">Alternate Mobile</label>
             <input
               value={cust_alt_mobile}
               onChange={(e) => setCustAltMobile(e.target.value)}
@@ -204,7 +267,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Fax Number</label>
             <input
               value={cust_fax}
               onChange={(e) => setCustFax(e.target.value)}
@@ -214,7 +276,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Email</label>
             <input
               value={cust_email}
               onChange={(e) => setCustEmail(e.target.value)}
@@ -224,7 +285,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Customer is Disable?</label>
             <input
               value={cust_is_disable}
               onChange={(e) => setCustIsDisable(e.target.value)}
@@ -235,7 +295,6 @@ const AddCustomer = () => {
           </div>
         </div><div className="form-row">
           <div className="col">
-          <label class="form-label">Education Qualification</label>
             <input
               value={cust_edu_qualification}
               onChange={(e) => setCustEduQualification(e.target.value)}
@@ -245,7 +304,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Occupation</label>
             <input
               value={cust_occupation}
               onChange={(e) => setCustOccupation(e.target.value)}
@@ -255,7 +313,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">PAN</label>
             <input
               value={cust_pan}
               onChange={(e) => setCustPan(e.target.value)}
@@ -265,7 +322,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Aadhar</label>
             <input
               value={cust_aadhar}
               onChange={(e) => setCustAadhar(e.target.value)}
@@ -276,7 +332,6 @@ const AddCustomer = () => {
           </div>
         </div><div className="form-row">
           <div className="col">
-          <label class="form-label">Passport</label>
             <input
               value={cust_passport}
               onChange={(e) => setCustPassport(e.target.value)}
@@ -286,7 +341,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Registration Date</label>
             <input
               value={cust_reg_date}
               onChange={(e) => setCustRegDate(e.target.value)}
@@ -296,7 +350,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Disability</label>
             <input
               value={cust_disability}
               onChange={(e) => setCustDisability(e.target.value)}
@@ -306,7 +359,6 @@ const AddCustomer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Type Disability</label>
             <input
               value={cust_type_disability}
               onChange={(e) => setCustTypeDisability(e.target.value)}
@@ -318,7 +370,6 @@ const AddCustomer = () => {
         </div>
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Percent Disability</label>
             <input
               value={cust_percent_disability}
               onChange={(e) => setCustPercentDisability(e.target.value)}
@@ -336,7 +387,7 @@ const AddCustomer = () => {
             className="btn btn-primary"
             
           >
-            Add Customer
+            Update Customer
           </button>
           </div>
         </div>
@@ -346,4 +397,4 @@ const AddCustomer = () => {
   );
 };
 
-export default AddCustomer;
+export default UpdateCustomer;

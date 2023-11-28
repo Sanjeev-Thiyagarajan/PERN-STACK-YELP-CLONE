@@ -1,14 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-// import { UserMasterContext } from "../context/UserMasterContext";
+import React, { useState, useContext } from "react";
 import BasePath from "../../apis/BasePath";
+import { UserMasterContext } from "../../context/UserMasterContext";
 
-const UpdateUserMaster = (props) => {
-  const { um_seq } = useParams();
-  let history = useHistory();
-  // const { userMasters } = useContext(UserMasterContext);
-  // const { addUserMasters } = useContext(UserMasterContext);
-   const [umSeq, setUmSeq] = useState(0);
+const AddVolunteer = () => {
+  const { addUserMasters } = useContext(UserMasterContext);
+  const [um_seq, setUmSeq] = useState("");
   const [um_login_id, setUmLoginId] = useState("");
   const [um_password, setUmPassword] = useState("");
   const [um_role, setUmRole] = useState(0);
@@ -23,33 +19,15 @@ const UpdateUserMaster = (props) => {
   const [um_last_login, setUmLastLogin] = useState("");
   const [um_ln_attempts, setUmLnAttempts] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await BasePath.get(`/userMasters/${um_seq}`);
-      console.log(response.data.data);
-      setUmSeq(response.data.data.User_Masters.um_seq);
-      setUmLoginId(response.data.data.User_Masters.um_login_id);
-      setUmPassword(response.data.data.User_Masters.um_password);
-      setUmRole(response.data.data.User_Masters.um_role);
-      setUmName(response.data.data.User_Masters.um_name);
-      setUmAddress(response.data.data.User_Masters.um_address);
-      setUmEmail(response.data.data.User_Masters.um_email);
-      setUmUniqueId(response.data.data.User_Masters.um_unique_id);
-      setUmIdType(response.data.data.User_Masters.um_id_type);
-      setUmDept(response.data.data.User_Masters.um_dept);
-      setUmLoginSts(response.data.data.User_Masters.um_login_sts);
-      setUmCreatedTime(response.data.data.User_Masters.um_created_time);
-      setUmLastLogin(response.data.data.User_Masters.um_last_login);
-      setUmLnAttempts(response.data.data.User_Masters.um_ln_attempts);
-    };
-
-    fetchData();
-  }, []);
-
+  const [ul_seq, setUlSeq] = useState(0);
+  const [ul_emp_id, setUlEmpId] = useState(um_seq);
+  const [ul_vol_id, setUlVolId] = useState();
+  const [ul_candidate_id, setUlCandidateId] = useState(0);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const updatedUserMaster = 
-    await BasePath.put(`/userMasters/${um_seq}`, {
+    try {
+      const response = await BasePath.post("/userMasters", {
         um_seq,
         um_login_id,
         um_password,
@@ -64,79 +42,73 @@ const UpdateUserMaster = (props) => {
         um_created_time,
         um_last_login,
         um_ln_attempts
-    });
-    history.push("/userMasters");
+      }
+
+      );
+      console.log(response.data.data);
+      addUserMasters(response.data.data.User_Masters);
+      alert('User Added');
+    } catch (err) {
+      alert(err)
+      console.log(err);
+    }
+
+    try {
+      const responseUL = await BasePath.post("/userLinkage", {
+        ul_seq,
+        ul_emp_id,
+        ul_vol_id,
+        ul_candidate_id,
+      }
+
+      );
+      console.log(responseUL.data.data);
+      addUserMasters(responseUL.data.data.Linked_Users);
+      // alert('User Added');
+    } catch (err) {
+      alert(err)
+      console.log(err);
+    }
+
+
   };
-
   return (
+    <>
+<h4> Add A User</h4>
     <div className="mb-4">
-      {/* <form action="">
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            id="name"
-            className="form-control"
-            type="text"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="location">Location</label>
-          <input
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            id="location"
-            className="form-control"
-            type="text"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="price_range">Price Range</label>
-          <input
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-            id="price_range"
-            className="form-control"
-            type="number"
-          />
-        </div>
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="btn btn-primary"
-        >
-          Submit
-        </button>
-      </form> */}
       <form action="">
         <div className="form-row">
           <div className="col">
+          <label class="form-label">Set UM Login</label>
             <input
               value={um_seq}
               onChange={(e) => setUmSeq(e.target.value)}
               type="number"
               className="form-control"
               placeholder="User Seq Number"
+              required
             />
           </div>
           <div className="col">
+            <label class="form-label">Set UM Login</label>
             <input
               value={um_login_id}
               onChange={(e) => setUmLoginId(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_login_id"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Set Password</label>
             <input
               value={um_password}
               onChange={(e) => setUmPassword(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_password"
+              required
             />
           </div>
           {/* <div className="col">
@@ -145,17 +117,18 @@ const UpdateUserMaster = (props) => {
               onChange={(e) => setPriceRange(e.target.value)}
               className="custom-select my-1 mr-sm-2"
             >
-              <option disabled>Price Range</option>
+              <option disabled>Price Range</option> 
               <option value="1">$</option>
               <option value="2">$$</option>
               <option value="3">$$$</option>
               <option value="4">$$$$</option>
               <option value="5">$$$$$</option>
             </select>
-          </div> */}
+          </div>  */}
           <div className="col">
+          <label class="form-label">Role</label>
             <input
-              value={um_role}
+              value={12}
               onChange={(e) => setUmRole(e.target.value)}
               className="form-control"
               type="number"
@@ -165,24 +138,29 @@ const UpdateUserMaster = (props) => {
         </div>
         <div className="form-row">
           <div className="col">
+        <label class="form-label">Name</label>
             <input
               value={um_name}
               onChange={(e) => setUmName(e.target.value)}
               type="text"
               className="form-control"
               placeholder="Um Name"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Address</label>
             <input
               value={um_address}
               onChange={(e) => setUmAddress(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_address"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Email</label>
             <input
               value={um_email}
               onChange={(e) => setUmEmail(e.target.value)}
@@ -192,6 +170,7 @@ const UpdateUserMaster = (props) => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Unique ID</label>
             <input
               value={um_unique_id}
               onChange={(e) => setUmUniqueId(e.target.value)}
@@ -203,6 +182,7 @@ const UpdateUserMaster = (props) => {
         </div>
         <div className="form-row">
           <div className="col">
+          <label class="form-label">UM ID</label>
             <input
               value={um_id_type}
               onChange={(e) => setUmIdType(e.target.value)}
@@ -212,6 +192,7 @@ const UpdateUserMaster = (props) => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Department</label>
             <input
               value={um_dept}
               onChange={(e) => setUmDept(e.target.value)}
@@ -221,6 +202,7 @@ const UpdateUserMaster = (props) => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Login Status</label>
             <input
               value={um_login_sts}
               onChange={(e) => setUmLoginSts(e.target.value)}
@@ -230,26 +212,29 @@ const UpdateUserMaster = (props) => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Login Created Time</label>
             <input
               value={um_created_time}
               onChange={(e) => setUmCreatedTime(e.target.value)}
               className="form-control"
-              type="datepicker"
+              type="date"
               placeholder="um_created_time"
             />
           </div>
         </div>
         <div className="form-row">
           <div className="col">
+          <label class="form-label">Last Login</label>
             <input
               value={um_last_login}
               onChange={(e) => setUmLastLogin(e.target.value)}
-              type="datepicker"
+              type="date"
               className="form-control"
               placeholder="um_last_login"
             />
           </div>
           <div className="col">
+          <label class="form-label">Um Ln Attempts</label>
             <input
               value={um_ln_attempts}
               onChange={(e) => setUmLnAttempts(e.target.value)}
@@ -259,20 +244,27 @@ const UpdateUserMaster = (props) => {
             />
           </div>
           <div className="col"></div>
-          <div className="col">
+          <div className="col text-center">
           <button
             onClick={handleSubmit}
             type="submit"
             className="btn btn-primary"
+            style={{
+
+              marginTop: "25px",
+              // alignSelf: "center",
+              width: "150px"
+            }}
             
           >
-            Update
+            Add
           </button>
           </div>
         </div>
       </form>
     </div>
+    </>
   );
 };
 
-export default UpdateUserMaster;
+export default AddVolunteer;

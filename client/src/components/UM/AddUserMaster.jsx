@@ -41,42 +41,49 @@ const AddUserMaster = () => {
       });
       console.log(response.data.data);
       addUserMasters(response.data.data.User_Masters);
+      alert('User Added');
     } catch (err) {
+      alert(err)
       console.log(err);
     }
   };
   return (
     <>
-    <h4> Add A User Master</h4>
+    {/* <h4> Add A User</h4>
     <div className="mb-4">
       <form action="">
         <div className="form-row">
           <div className="col">
-            {/* <label>User Seq Number</label> */}
+          <label class="form-label">Set UM Login</label>
             <input
               value={um_seq}
               onChange={(e) => setUmSeq(e.target.value)}
               type="number"
               className="form-control"
               placeholder="User Seq Number"
+              required
             />
           </div>
           <div className="col">
+            <label class="form-label">Set UM Login</label>
             <input
               value={um_login_id}
               onChange={(e) => setUmLoginId(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_login_id"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Set Password</label>
             <input
               value={um_password}
               onChange={(e) => setUmPassword(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_password"
+              required
             />
           </div>
           {/* <div className="col">
@@ -85,15 +92,16 @@ const AddUserMaster = () => {
               onChange={(e) => setPriceRange(e.target.value)}
               className="custom-select my-1 mr-sm-2"
             >
-              <option disabled>Price Range</option>
+              <option disabled>Price Range</option> 
               <option value="1">$</option>
               <option value="2">$$</option>
               <option value="3">$$$</option>
               <option value="4">$$$$</option>
               <option value="5">$$$$$</option>
             </select>
-          </div> */}
+          </div> 
           <div className="col">
+          <label class="form-label">Set Role</label>
             <input
               value={um_role}
               onChange={(e) => setUmRole(e.target.value)}
@@ -105,24 +113,29 @@ const AddUserMaster = () => {
         </div>
         <div className="form-row">
           <div className="col">
+        <label class="form-label">Name</label>
             <input
               value={um_name}
               onChange={(e) => setUmName(e.target.value)}
               type="text"
               className="form-control"
               placeholder="Um Name"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Address</label>
             <input
               value={um_address}
               onChange={(e) => setUmAddress(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_address"
+              required
             />
           </div>
           <div className="col">
+          <label class="form-label">Email</label>
             <input
               value={um_email}
               onChange={(e) => setUmEmail(e.target.value)}
@@ -132,6 +145,7 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Unique ID</label>
             <input
               value={um_unique_id}
               onChange={(e) => setUmUniqueId(e.target.value)}
@@ -143,6 +157,7 @@ const AddUserMaster = () => {
         </div>
         <div className="form-row">
           <div className="col">
+          <label class="form-label">UM ID</label>
             <input
               value={um_id_type}
               onChange={(e) => setUmIdType(e.target.value)}
@@ -152,6 +167,7 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Department</label>
             <input
               value={um_dept}
               onChange={(e) => setUmDept(e.target.value)}
@@ -161,6 +177,7 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Login Status</label>
             <input
               value={um_login_sts}
               onChange={(e) => setUmLoginSts(e.target.value)}
@@ -170,6 +187,7 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Login Created Time</label>
             <input
               value={um_created_time}
               onChange={(e) => setUmCreatedTime(e.target.value)}
@@ -181,6 +199,7 @@ const AddUserMaster = () => {
         </div>
         <div className="form-row">
           <div className="col">
+          <label class="form-label">Last Login</label>
             <input
               value={um_last_login}
               onChange={(e) => setUmLastLogin(e.target.value)}
@@ -190,6 +209,7 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col">
+          <label class="form-label">Um Ln Attempts</label>
             <input
               value={um_ln_attempts}
               onChange={(e) => setUmLnAttempts(e.target.value)}
@@ -199,11 +219,17 @@ const AddUserMaster = () => {
             />
           </div>
           <div className="col"></div>
-          <div className="col">
+          <div className="col text-center">
           <button
             onClick={handleSubmit}
             type="submit"
             className="btn btn-primary"
+            style={{
+
+              marginTop: "25px",
+              // alignSelf: "center",
+              width: "150px"
+            }}
             
           >
             Add
@@ -211,7 +237,7 @@ const AddUserMaster = () => {
           </div>
         </div>
       </form>
-    </div>
+    </div> */}
     </>
   );
 };

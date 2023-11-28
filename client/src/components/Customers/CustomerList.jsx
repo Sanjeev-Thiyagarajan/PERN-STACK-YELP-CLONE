@@ -60,41 +60,41 @@ const CustomerList = (props) => {
   return (
     <>
     <h4>
-      Customer List
+    Candidate List
     </h4>
     <div className="table-responsive">
-      <table className="table table-sm table-striped table-hover table-bordered table-condensed"
+      <table className="table table-sm table-striped table-hover table-bordered table-condensed "
       
       style={{
         position: "relative"
       }}>
         <thead className =" thead-dark">
           <tr className="bg-primary">
-            <th scope="col">customer_id</th>
-            <th scope="col">sales_rep_emp_num</th>
-            <th scope="col">cust_first_name</th>
-            <th scope="col">cust_last_name</th>
-            <th scope="col">cust_mother_name</th>
-            <th scope="col">cust_father_name</th>
-            <th scope="col">cust_spouse_name</th>
-            <th scope="col">cust_dob</th>
-            <th scope="col">cust_gender</th>
-            <th scope="col">cust_maritial_sts</th>
-            <th scope="col">cust_phone</th>
-            <th scope="col">cust_mobile</th>
-            <th scope="col">cust_alt_mobile</th>
-            <th scope="col">cust_fax</th>
-            <th scope="col">cust_email</th>
-            <th scope="col">cust_is_disable</th>
-            <th scope="col">cust_edu_qualification</th>
-            <th scope="col">cust_occupation</th>
-            <th scope="col">cust_pan</th>
-            <th scope="col">cust_aadhar</th>
-            <th scope="col">cust_passport</th>
-            <th scope="col">cust_reg_date</th>
-            <th scope="col">cust_disability</th>
-            <th scope="col">cust_type_disability</th>
-            <th scope="col">cust_percent_disability</th>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Sales Rep Emp No</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">mother Name</th>
+            <th scope="col">Father Name</th>
+            <th scope="col">Spouse Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Maritial Status</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Alt Mobile</th>
+            <th scope="col">Fax</th>
+            <th scope="col">Email</th>
+            <th scope="col">Is Disable</th>
+            <th scope="col">Qualification</th>
+            <th scope="col">Occupation</th>
+            <th scope="col">PAN</th>
+            <th scope="col">Aadhar</th>
+            <th scope="col">Passport</th>
+            <th scope="col">Reg Date</th>
+            <th scope="col">Disability</th>
+            <th scope="col">Type of Disability</th>
+            <th scope="col">Percent Disability</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -103,11 +103,11 @@ const CustomerList = (props) => {
           {customers &&
             customers.map((customer) => {
               return (
-                <tr
-                  onClick={() => handleCustomerSelect(customer.customer_id)}
+                <tr>
+                  <td 
+                    onClick={() => handleCustomerSelect(customer.customer_id)}
                     key={customer.customer_id}
-                >
-                  <td>{customer.customer_id}</td>
+                    >{customer.customer_id}</td>
                   <td>{customer.sales_rep_emp_num}</td>
                   <td>{customer.cust_first_name}</td>
                   <td>{customer.cust_last_name}</td>

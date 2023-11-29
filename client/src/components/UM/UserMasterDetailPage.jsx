@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { UserMasterContext } from "../../context/UserMasterContext";
 import BasePath from "../../apis/BasePath";
 import { CustomerContext } from "../../context/CustomerContext";
+import { VolunteerContext } from "../../context/VolunteerContext";
 // import StarRating from "../components/StarRating";
 // import Reviews from "../components/Reviews";
 // import AddReview from "../components/AddReview";
@@ -13,7 +14,7 @@ const UserMasterDetailPage = () => {
     UserMasterContext
   );
   let history = useHistory();
-  const { customers, setCustomers } = useContext(CustomerContext);
+  const { volunteers, setVolunteers } = useContext(VolunteerContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,9 +24,9 @@ const UserMasterDetailPage = () => {
         console.log("User Details " +response);
 
 
-        const userCustomerDataResponse = await BasePath.get(`/userCustomers/${um_seq}`);
-        setCustomers(userCustomerDataResponse.data.data.userCustomerData);
-        console.log("User Customer Data " + userCustomerDataResponse.data.data);
+        const userVolunteerDataResponse = await BasePath.get(`/userVolunteers/${um_seq}`);
+        setVolunteers(userVolunteerDataResponse.data.data.userVolunteers);
+        console.log("User Volunteer Data " + userVolunteerDataResponse.data.data);
 
       } catch (err) {
         console.log(err);
@@ -33,7 +34,7 @@ const UserMasterDetailPage = () => {
     };
 
     fetchData();
-  }, [setCustomers]);
+  }, [setVolunteers]);
 
   //UserCustomerData Fetch
   
@@ -52,14 +53,14 @@ const UserMasterDetailPage = () => {
   // }, [setCustomers]);
   // console.log("Outside UseEfffect : "+ setCustomers);
 
-  const handleDelete = async (e, customer_id) => {
+  const handleDelete = async (e, vol_id) => {
     e.stopPropagation();
     try {
       // const response = 
-      await BasePath.delete(`/customers/${customer_id}`);
-      setCustomers(
-        customers.filter((customer) => {
-          return customer.customer_id !== customer_id;
+      await BasePath.delete(`/volunteer/${vol_id}`);
+      setVolunteers(
+        volunteers.filter((volunteer) => {
+          return volunteer.vol_id !== vol_id;
         })
       );
     } catch (err) {
@@ -67,13 +68,13 @@ const UserMasterDetailPage = () => {
     }
   };
 
-  const handleUpdate = (e, customer_id) => {
+  const handleUpdate = (e, vol_id) => {
     e.stopPropagation();
-    history.push(`/customers/${customer_id}/update`);
+    history.push(`/volunteers/${vol_id}/update`);
   };
 
-  const handleCustomerSelect = (customer_id) => {
-    history.push(`/customers/${customer_id}`);
+  const handleVolunteerSelect = (vol_id) => {
+    history.push(`/volunteers/${vol_id}`);
   };
 
   return (
@@ -154,9 +155,9 @@ const UserMasterDetailPage = () => {
             </div>
           </div>
 
-          {/* User's Customer Data */}
+          {/* User's Volunteer Data */}
           <h4>
-          {selectedUserMaster.User_Masters.um_name}'s Candidate Data
+          {selectedUserMaster.User_Masters.um_name}'s Volunteer Data
           </h4>
           <div className="table-responsive">
             <table className="table table-sm table-striped table-hover table-bordered table-condensed"
@@ -166,72 +167,52 @@ const UserMasterDetailPage = () => {
             }}>
               <thead className =" thead-dark">
                 <tr className="bg-primary">
-                  <th scope="col">candidate_id</th>
-                  <th scope="col">Sales Rep Emp Num</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Mother's Name</th>
-                  <th scope="col">Father's Name</th>
-                  <th scope="col">Spouse Name</th>
-                  <th scope="col">Date of Birth</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">Maritial Status</th>
-                  <th scope="col">Phone</th>
-                  <th scope="col">Mobile</th>
-                  <th scope="col">Alternate Mobile</th>
-                  <th scope="col">Fax</th>
+                  <th scope="col">Volunteer ID</th>
+                  <th scope="col">UM SEQ</th>
+                  <th scope="col">Login Id</th>
+                  <th scope="col">Password</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Address</th>
                   <th scope="col">Email</th>
-                  <th scope="col">is Disable</th>
-                  <th scope="col">Education Qualification</th>
-                  <th scope="col">Occupation</th>
-                  <th scope="col">PAN</th>
-                  <th scope="col">Aadhar</th>
-                  <th scope="col">Passport</th>
-                  <th scope="col">Registration Date</th>
-                  <th scope="col">Disability</th>
-                  <th scope="col">Type Disability</th>
-                  <th scope="col">Percent Disability</th>
+                  <th scope="col">Unique ID</th>
+                  <th scope="col">ID Type</th>
+                  <th scope="col">Department</th>
+                  <th scope="col">Login Sts</th>
+                  <th scope="col">Created Time</th>
+                  <th scope="col">last Login</th>
+                  <th scope="col">Ln Attempts</th>
                   <th scope="col">Update</th>
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {customers &&
-                  customers.map((customer) => {
+                {volunteers &&
+                  volunteers.map((volunteer) => {
                     return (
                       <tr
-                        onClick={() => handleCustomerSelect(customer.customer_id)}
-                          key={customer.customer_id}
+                        onClick={() => handleVolunteerSelect(volunteer.vol_id)}
+                          key={volunteer.vol_id}
                       >
-                        <td>{customer.customer_id}</td>
-                        <td>{customer.sales_rep_emp_num}</td>
-                        <td>{customer.cust_first_name}</td>
-                        <td>{customer.cust_last_name}</td>
-                        <td>{customer.cust_mother_name}</td>
-                        <td>{customer.cust_father_name}</td>
-                        <td>{customer.cust_spouse_name}</td>
-                        <td>{customer.cust_dob}</td>
-                        <td>{customer.cust_gender}</td>
-                        <td>{customer.cust_maritial_sts}</td>
-                        <td>{customer.cust_phone}</td>
-                        <td>{customer.cust_mobile}</td>
-                        <td>{customer.cust_alt_mobile}</td>
-                        <td>{customer.cust_fax}</td>
-                        <td>{customer.cust_email}</td>
-                        <td>{customer.cust_is_disable}</td>
-                        <td>{customer.cust_edu_qualification}</td>
-                        <td>{customer.cust_occupation}</td>
-                        <td>{customer.cust_pan}</td>
-                        <td>{customer.cust_aadhar}</td>
-                        <td>{customer.cust_passport}</td>
-                        <td>{customer.cust_reg_date}</td>
-                        <td>{customer.cust_disability}</td>
-                        <td>{customer.cust_type_disability}</td>
-                        <td>{customer.cust_percent_disability}</td>
+                        <td>{volunteer.vol_id}</td>
+                        <td>{volunteer.um_seq}</td>
+                        <td>{volunteer.um_login_id}</td>
+                        <td>{volunteer.um_password}</td>
+                        <td>{volunteer.um_role}</td>
+                        <td>{volunteer.um_name}</td>
+                        <td>{volunteer.um_address}</td>
+                        <td>{volunteer.um_email}</td>
+                        <td>{volunteer.um_unique_id}</td>
+                        <td>{volunteer.um_id_type}</td>
+                        <td>{volunteer.um_dept}</td>
+                        <td>{volunteer.um_login_sts}</td>
+                        <td>{volunteer.um_created_time}</td>
+                        <td>{volunteer.um_last_login}</td>
+                        <td>{volunteer.um_ln_attempts}</td>
                         
                         <td>
                           <button
-                            onClick={(e) => handleUpdate(e, customer.customer_id)}
+                            onClick={(e) => handleUpdate(e, volunteer.vol_id)}
                             className="btn btn-warning"
                           >
                             Update
@@ -239,7 +220,7 @@ const UserMasterDetailPage = () => {
                         </td>
                         <td>
                           <button
-                            onClick={(e) => handleDelete(e, customer.customer_id)}
+                            onClick={(e) => handleDelete(e, volunteer.vol_id)}
                             className="btn btn-danger"
                           >
                             Delete

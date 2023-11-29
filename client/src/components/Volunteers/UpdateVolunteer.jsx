@@ -1,14 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+// import { UserMasterContext } from "../context/UserMasterContext";
 import BasePath from "../../apis/BasePath";
-import { VolunteerContext } from "../../context/VolunteerContext";
 
-const AddVolunteer = () => {
-  const { addVolunteers } = useContext(VolunteerContext);
-  const [vol_id, setVolId] = useState(0);
+const UpdateVolunteer = (props) => {
+  const { vol_id } = useParams();
+  let history = useHistory();
+  // const { userMasters } = useContext(UserMasterContext);
+  // const { addUserMasters } = useContext(UserMasterContext);
+  const [volId, setVolId] = useState(0);
   const [um_seq, setUmSeq] = useState(0);
   const [um_login_id, setUmLoginId] = useState("");
   const [um_password, setUmPassword] = useState("");
-  const [um_role, setUmRole] = useState(12);
+  const [um_role, setUmRole] = useState(0);
   const [um_name, setUmName] = useState("");
   const [um_address, setUmAddress] = useState("");
   const [um_email, setUmEmail] = useState("");
@@ -20,15 +24,34 @@ const AddVolunteer = () => {
   const [um_last_login, setUmLastLogin] = useState("");
   const [um_ln_attempts, setUmLnAttempts] = useState("");
 
-  // const [ul_seq, setUlSeq] = useState(0);
-  // const [ul_emp_id, setUlEmpId] = useState(um_seq);
-  // const [ul_vol_id, setUlVolId] = useState();
-  // const [ul_candidate_id, setUlCandidateId] = useState(0);
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await BasePath.get(`/volunteer/${vol_id}`);
+      console.log(response.data.data);
+      setVolId(response.data.data.Volunteers.um_seq);
+      setUmSeq(response.data.data.Volunteers.um_seq);
+      setUmLoginId(response.data.data.Volunteers.um_login_id);
+      setUmPassword(response.data.data.Volunteers.um_password);
+      setUmRole(response.data.data.Volunteers.um_role);
+      setUmName(response.data.data.Volunteers.um_name);
+      setUmAddress(response.data.data.Volunteers.um_address);
+      setUmEmail(response.data.data.Volunteers.um_email);
+      setUmUniqueId(response.data.data.Volunteers.um_unique_id);
+      setUmIdType(response.data.data.Volunteers.um_id_type);
+      setUmDept(response.data.data.Volunteers.um_dept);
+      setUmLoginSts(response.data.data.Volunteers.um_login_sts);
+      setUmCreatedTime(response.data.data.Volunteers.um_created_time);
+      setUmLastLogin(response.data.data.Volunteers.um_last_login);
+      setUmLnAttempts(response.data.data.Volunteers.um_ln_attempts);
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await BasePath.post("/volunteer", {
+    // const updatedUserMaster = 
+    await BasePath.put(`/volunteer/${vol_id}`, {
         vol_id,
         um_seq,
         um_login_id,
@@ -44,73 +67,79 @@ const AddVolunteer = () => {
         um_created_time,
         um_last_login,
         um_ln_attempts
-      }
-
-      );
-      console.log(response.data.data);
-      addVolunteers(response.data.data.Volunteers);
-      alert('Volunteer Added');
-    } catch (err) {
-      alert(err)
-      console.log(err);
-    }
-
-    // try {
-    //   const responseUL = await BasePath.post("/userLinkage", {
-    //     ul_seq,
-    //     ul_emp_id,
-    //     ul_vol_id,
-    //     ul_candidate_id,
-    //   }
-
-      // );
-    //   console.log(responseUL.data.data);
-    //   addUserMasters(responseUL.data.data.Linked_Users);
-    //   // alert('User Added');
-    // } catch (err) {
-    //   alert(err)
-    //   console.log(err);
-    // }
-
-
+    });
+    history.push("/volunteers");
   };
+
   return (
-    <>
-<h4> Add A Volunteer</h4>
     <div className="mb-4">
+      {/* <form action="">
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            id="name"
+            className="form-control"
+            type="text"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="location">Location</label>
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            id="location"
+            className="form-control"
+            type="text"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="price_range">Price Range</label>
+          <input
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+            id="price_range"
+            className="form-control"
+            type="number"
+          />
+        </div>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="btn btn-primary"
+        >
+          Submit
+        </button>
+      </form> */}
       <form action="">
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Set UM Seq Num</label>
             <input
               value={um_seq}
               onChange={(e) => setUmSeq(e.target.value)}
               type="number"
               className="form-control"
               placeholder="User Seq Number"
-              required
             />
           </div>
           <div className="col">
-            <label class="form-label">Set UM Login</label>
             <input
               value={um_login_id}
               onChange={(e) => setUmLoginId(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_login_id"
-              required
             />
           </div>
           <div className="col">
-          <label class="form-label">Set Password</label>
             <input
               value={um_password}
               onChange={(e) => setUmPassword(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_password"
-              required
             />
           </div>
           {/* <div className="col">
@@ -119,18 +148,17 @@ const AddVolunteer = () => {
               onChange={(e) => setPriceRange(e.target.value)}
               className="custom-select my-1 mr-sm-2"
             >
-              <option disabled>Price Range</option> 
+              <option disabled>Price Range</option>
               <option value="1">$</option>
               <option value="2">$$</option>
               <option value="3">$$$</option>
               <option value="4">$$$$</option>
               <option value="5">$$$$$</option>
             </select>
-          </div>  */}
+          </div> */}
           <div className="col">
-          <label class="form-label">Role</label>
             <input
-              value="12"
+              value={um_role}
               onChange={(e) => setUmRole(e.target.value)}
               className="form-control"
               type="number"
@@ -140,29 +168,24 @@ const AddVolunteer = () => {
         </div>
         <div className="form-row">
           <div className="col">
-        <label class="form-label">Name</label>
             <input
               value={um_name}
               onChange={(e) => setUmName(e.target.value)}
               type="text"
               className="form-control"
               placeholder="Um Name"
-              required
             />
           </div>
           <div className="col">
-          <label class="form-label">Address</label>
             <input
               value={um_address}
               onChange={(e) => setUmAddress(e.target.value)}
               className="form-control"
               type="text"
               placeholder="um_address"
-              required
             />
           </div>
           <div className="col">
-          <label class="form-label">Email</label>
             <input
               value={um_email}
               onChange={(e) => setUmEmail(e.target.value)}
@@ -172,7 +195,6 @@ const AddVolunteer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Unique ID</label>
             <input
               value={um_unique_id}
               onChange={(e) => setUmUniqueId(e.target.value)}
@@ -184,7 +206,6 @@ const AddVolunteer = () => {
         </div>
         <div className="form-row">
           <div className="col">
-          <label class="form-label">UM ID</label>
             <input
               value={um_id_type}
               onChange={(e) => setUmIdType(e.target.value)}
@@ -194,7 +215,6 @@ const AddVolunteer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Department</label>
             <input
               value={um_dept}
               onChange={(e) => setUmDept(e.target.value)}
@@ -204,7 +224,6 @@ const AddVolunteer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Login Status</label>
             <input
               value={um_login_sts}
               onChange={(e) => setUmLoginSts(e.target.value)}
@@ -214,29 +233,26 @@ const AddVolunteer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Login Created Time</label>
             <input
               value={um_created_time}
               onChange={(e) => setUmCreatedTime(e.target.value)}
               className="form-control"
-              type="date"
+              type="datepicker"
               placeholder="um_created_time"
             />
           </div>
         </div>
         <div className="form-row">
           <div className="col">
-          <label class="form-label">Last Login</label>
             <input
               value={um_last_login}
               onChange={(e) => setUmLastLogin(e.target.value)}
-              type="date"
+              type="datepicker"
               className="form-control"
               placeholder="um_last_login"
             />
           </div>
           <div className="col">
-          <label class="form-label">Um Ln Attempts</label>
             <input
               value={um_ln_attempts}
               onChange={(e) => setUmLnAttempts(e.target.value)}
@@ -246,8 +262,7 @@ const AddVolunteer = () => {
             />
           </div>
           <div className="col">
-          <label class="form-label">Vol Id</label>
-            <input
+          <input
               value={vol_id}
               onChange={(e) => setVolId(e.target.value)}
               className="form-control"
@@ -255,27 +270,20 @@ const AddVolunteer = () => {
               placeholder="Vol ID"
             />
           </div>
-          <div className="col text-center">
+          <div className="col">
           <button
             onClick={handleSubmit}
             type="submit"
             className="btn btn-primary"
-            style={{
-
-              marginTop: "25px",
-              // alignSelf: "center",
-              width: "150px"
-            }}
             
           >
-            Add
+            Update
           </button>
           </div>
         </div>
       </form>
     </div>
-    </>
   );
 };
 
-export default AddVolunteer;
+export default UpdateVolunteer;

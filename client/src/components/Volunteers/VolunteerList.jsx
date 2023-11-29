@@ -2,7 +2,8 @@ import React, { useEffect, useContext } from "react";
 import BasePath from "../../apis/BasePath";
 import { UserMasterContext } from "../../context/UserMasterContext";
 import { useHistory } from "react-router-dom";
-// import $ from 'jquery';
+import $ from 'jquery';
+import { VolunteerContext } from "../../context/VolunteerContext";
 // import StarRating from "./StarRating";
 
 // $(document).ready(function () {
@@ -18,28 +19,28 @@ import { useHistory } from "react-router-dom";
 
 
 const VolunteerList = (props) => {
-  const { userMasters, setUserMasters } = useContext(UserMasterContext);
+  const { volunteers, setVolunteers } = useContext(VolunteerContext);
   let history = useHistory();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await BasePath.get("/userMasters");
+        const response = await BasePath.get("/userMasters/volunteer");
         console.log(response.data.data);
-        setUserMasters(response.data.data.User_Masters);
+        setVolunteers(response.data.data.Volunteers);
       } catch (err) {}
     };
 
     fetchData();
-  }, [setUserMasters]);
+  }, [setVolunteers]);
 
-  const handleDelete = async (e, um_seq) => {
+  const handleDelete = async (e, vol_id) => {
     e.stopPropagation();
     try {
       // const response = 
-      await BasePath.delete(`/userMasters/${um_seq}`);
-      setUserMasters(
-        userMasters.filter((userMaster) => {
-          return userMaster.um_seq !== um_seq;
+      await BasePath.delete(`/volunteer/${vol_id}`);
+      setVolunteers(
+        volunteers.filter((volunteer) => {
+          return volunteer.vol_id !== vol_id;
         })
       );
     } catch (err) {
@@ -47,13 +48,13 @@ const VolunteerList = (props) => {
     }
   };
 
-  const handleUpdate = (e, um_seq) => {
+  const handleUpdate = (e, vol_id) => {
     e.stopPropagation();
-    history.push(`/userMasters/${um_seq}/update`);
+    history.push(`/volunteers/${vol_id}/update`);
   };
 
-  const handleUserMasterSelect = (um_seq) => {
-    history.push(`/userMasters/${um_seq}`);
+  const handleVolunteerSelect = (vol_id) => {
+    history.push(`/volunteers/${vol_id}`);
   };
 
   // const renderRating = (userMaster) => {
@@ -71,16 +72,17 @@ const VolunteerList = (props) => {
   return (
     <>
     <h4>
-      User List
+      Volunteer List
     </h4>
     <div className="table-responsive">
       <table
-      id="UserMastersTable" className="table table-sm table-striped table-hover table-bordered table-condensed"
+      id="VolunteersTable" className="table table-sm table-striped table-hover table-bordered table-condensed"
       cellSpacing="0"
       width="100%"
       >
         <thead className =" thead-dark">
           <tr className="bg-primary">
+            <th scope="col">Volunteer ID</th>
             <th scope="col">UM SEQ</th>
             <th scope="col">Login Id</th>
             <th scope="col">Password</th>
@@ -101,35 +103,35 @@ const VolunteerList = (props) => {
           </tr>
         </thead>
         <tbody>
-          {userMasters &&
-            userMasters.map((userMaster) => {
+          {volunteers &&
+            volunteers.map((volunteer) => {
               return (
                 <tr>
                   <td
-                  onClick={() => handleUserMasterSelect(userMaster.um_seq)}
-                  key={userMaster.um_seq}
+                  onClick={() => handleVolunteerSelect(volunteers.vol_id)}
+                  key={volunteer.vol_id}
                   style={{
                     // position: "absolute"
                     // marginRi
                   }}
-                  >{userMaster.um_seq}
+                  >{volunteer.vol_id}
                   </td>
-                  <td>{userMaster.um_login_id}</td>
-                  <td>{userMaster.um_password}</td>
-                  <td>{userMaster.um_role}</td>
-                  <td>{userMaster.um_name}</td>
-                  <td>{userMaster.um_address}</td>
-                  <td>{userMaster.um_email}</td>
-                  <td>{userMaster.um_unique_id}</td>
-                  <td>{userMaster.um_id_type}</td>
-                  <td>{userMaster.um_dept}</td>
-                  <td>{userMaster.um_login_sts}</td>
-                  <td>{userMaster.um_created_time}</td>
-                  <td>{userMaster.um_last_login}</td>
-                  <td>{userMaster.um_ln_attempts}</td>
+                  <td>{volunteer.um_login_id}</td>
+                  <td>{volunteer.um_password}</td>
+                  <td>{volunteer.um_role}</td>
+                  <td>{volunteer.um_name}</td>
+                  <td>{volunteer.um_address}</td>
+                  <td>{volunteer.um_email}</td>
+                  <td>{volunteer.um_unique_id}</td>
+                  <td>{volunteer.um_id_type}</td>
+                  <td>{volunteer.um_dept}</td>
+                  <td>{volunteer.um_login_sts}</td>
+                  <td>{volunteer.um_created_time}</td>
+                  <td>{volunteer.um_last_login}</td>
+                  <td>{volunteer.um_ln_attempts}</td>
                   <td>
                     <button
-                      onClick={(e) => handleUpdate(e, userMaster.um_seq)}
+                      onClick={(e) => handleUpdate(e, volunteer.vol_id)}
                       className="btn btn-warning"
                     >
                       Update
@@ -137,7 +139,7 @@ const VolunteerList = (props) => {
                   </td>
                   <td>
                     <button
-                      onClick={(e) => handleDelete(e, userMaster.um_seq)}
+                      onClick={(e) => handleDelete(e, volunteer.vol_id)}
                       className="btn btn-danger"
                     >
                       Delete

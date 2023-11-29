@@ -39,7 +39,7 @@ app.get("/api/v1/userMasters", async (req, res) => {
   try {
     //const results = await db.query("select * from restaurants");
     const results = await db.query(
-      "select * from user_master"
+      "select * from user_master ORDER BY um_seq, um_role"
     );
     console.log(results);
 
@@ -61,7 +61,7 @@ app.get("/api/v1/userMasters/:um_seq", async (req, res) => {
 
   try {
     const results = await db.query(
-      "select * from user_master where um_seq = $1 ORDER BY um_seq, um_role",
+      "select * from user_master where um_seq = $1",
       [req.params.um_seq]
     );
 
@@ -160,7 +160,7 @@ app.get("/api/v1/customers", async (req, res) => {
   try {
     //const results = await db.query("select * from restaurants");
     const customerData = await db.query(
-      "select * from customers"
+      "select * from customers ORDER BY customer_id"
     );
     console.log(customerData);
 
@@ -236,13 +236,13 @@ app.delete("/api/v1/customers/:customer_id", async (req, res) => {
 });
 
 
-//Customers for User Master
-app.get("/api/v1/userCustomers/:um_seq", async (req, res) => {
+//Customers for Volunteer
+app.get("/api/v1/userCustomers/:vol_id", async (req, res) => {
   try {
     //const results = await db.query("select * from restaurants");
     const userCustomerData = await db.query(
-      "SELECT * FROM customers INNER JOIN user_master ON customers.sales_rep_emp_num = user_master.um_seq where sales_rep_emp_num=$1",
-      [req.params.um_seq]
+      "SELECT * FROM customers INNER JOIN volunteer ON customers.sales_rep_emp_num = volunteer.vol_id where sales_rep_emp_num=$1",
+      [req.params.vol_id]
     );
     console.log(userCustomerData);
 
@@ -251,6 +251,29 @@ app.get("/api/v1/userCustomers/:um_seq", async (req, res) => {
       results: userCustomerData.rows.length,
       data: {
         userCustomerData: userCustomerData.rows,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+//Volunteer for UMs
+app.get("/api/v1/userVolunteers/:um_seq", async (req, res) => {
+  try {
+    //const results = await db.query("select * from restaurants");
+    const userVolunteerData = await db.query(
+      "SELECT * FROM volunteer INNER JOIN user_master ON volunteer.um_seq = user_master.um_seq where user_master.um_seq=$1",
+      [req.params.um_seq]
+    );
+    console.log(userVolunteerData);
+
+    res.status(200).json({
+      status: "success",
+      results: userVolunteerData.rows.length,
+      data: {
+        userVolunteers: userVolunteerData.rows,
       },
     });
   } catch (err) {
@@ -305,19 +328,19 @@ app.get("/api/v1/login/:um_login_id", async (req, res) => {
 
 ////// Volunteers
 
-app.post("/api/v1/userLinkage", async (req, res) => {
+app.post("/api/v1/volunteer", async (req, res) => {
   console.log(req.body);
 
   try {
     const results = await db.query(
-      "INSERT INTO user_linkage (ul_seq, ul_emp_id, ul_vol_id, ul_candidate_id) VALUES ($1, $2, $3, $4) returning *",
-      [req.body.ul_seq, req.body.ul_emp_id, req.body.ul_vol_id, req.body.ul_candidate_id]
+      "INSERT INTO volunteer (um_seq, um_login_id, um_password, um_role, um_name, um_address, um_email, um_unique_id, um_id_type, um_dept, um_login_sts, um_created_time, um_last_login, um_ln_attempts, vol_id) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) returning *",
+      [req.body.um_seq, req.body.um_login_id, req.body.um_password, req.body.um_role, req.body.um_name, req.body.um_address, req.body.um_email, req.body.um_unique_id, req.body.um_id_type, req.body.um_dept, req.body.um_login_sts, req.body.um_created_time, req.body.um_last_login, req.body.um_ln_attempts, req.body.vol_id]
     );
     console.log(results);
     res.status(201).json({
       status: "success",
       data: {
-        Linked_Users: results.rows[0],
+        Volunteers: results.rows[0],
       },
     });
   } catch (err) {
@@ -327,12 +350,13 @@ app.post("/api/v1/userLinkage", async (req, res) => {
 
 
 // Get all Volunteers under User Master Um seq
-app.get("/api/v1/userLinkage/:um_seq", async (req, res) => {
+app.get("/api/v1/volunteer", async (req, res) => {
   try {
     //const results = await db.query("select * from restaurants");
     const results = await db.query(
-      "select * from user_master where um_role =$1 and um_seq in( select ul_vol_id from user_linkage where ul_emp_id=$2)",
-      [12, req.params.um_seq]
+      "SELECT * FROM volunteer"
+      //  INNER JOIN user_master ON volunteer.um_seq = user_master.um_seq where um_seq=$1 ORDER BY vol_id"
+      // [req.params.um_seq]
     );
     console.log(results);
 
@@ -340,7 +364,7 @@ app.get("/api/v1/userLinkage/:um_seq", async (req, res) => {
       status: "success",
       results: results.rows.length,
       data: {
-        Linked_Users: results.rows,
+        Volunteers: results.rows,
       },
     });
   } catch (err) {
@@ -348,64 +372,64 @@ app.get("/api/v1/userLinkage/:um_seq", async (req, res) => {
   }
 });
 
-//Get a user Master
-// app.get("/api/v1/userLinkage/:um_seq", async (req, res) => {
-//   console.log(req.params.um_seq);
+//// Get a Volunteer
+app.get("/api/v1/volunteer/:vol_id", async (req, res) => {
+  console.log(req.params.um_seq);
 
-//   try {
-//     const results = await db.query(
-//       "select * from user_master where um_seq = $1 ORDER BY um_seq, um_role",
-//       [req.params.um_seq]
-//     );
+  try {
+    const results = await db.query(
+      "select * from volunteer where vol_id = $1",
+      [req.params.vol_id]
+    );
 
-//     res.status(200).json({
-//       status: "success",
-//       data: {
-//         User_Masters: results.rows[0],
-//         // reviews: reviews.rows,
-//       },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+    res.status(200).json({
+      status: "success",
+      data: {
+        Volunteers: results.rows[0],
+        // reviews: reviews.rows,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
-// Update User Master
+//// Update Volunteer
 
-// app.put("/api/v1/userMasters/:um_seq", async (req, res) => {
-//   try {
-//     const results = await db.query(
-//       "UPDATE user_master SET um_seq = $1, um_login_id = $2, um_password = $3, um_role =$4, um_name =$5, um_address=$6, um_email=$7, um_unique_id=$8, um_id_type=$9, um_dept=$10, um_login_sts=$11, um_created_time=$12, um_last_login=$13, um_ln_attempts=$14 where um_seq = $1 returning *",
-//       [req.body.um_seq, req.body.um_login_id, req.body.um_password, req.body.um_role, req.body.um_name, req.body.um_address, req.body.um_email, req.body.um_unique_id, req.body.um_id_type, req.body.um_dept, req.body.um_login_sts, req.body.um_created_time, req.body.um_last_login, req.body.um_ln_attempts]
-//     );
+app.put("/api/v1/volunteer/:vol_id", async (req, res) => {
+  try {
+    const results = await db.query(
+      "UPDATE volunteer SET um_seq = $1, um_login_id = $2, um_password = $3, um_role =$4, um_name =$5, um_address=$6, um_email=$7, um_unique_id=$8, um_id_type=$9, um_dept=$10, um_login_sts=$11, um_created_time=$12, um_last_login=$13, um_ln_attempts=$14, vol_id=$15 where vol_id = $15 returning *",
+      [req.body.um_seq, req.body.um_login_id, req.body.um_password, req.body.um_role, req.body.um_name, req.body.um_address, req.body.um_email, req.body.um_unique_id, req.body.um_id_type, req.body.um_dept, req.body.um_login_sts, req.body.um_created_time, req.body.um_last_login, req.body.um_ln_attempts, req.body.vol_id]
+    );
 
-//     res.status(200).json({
-//       status: "success",
-//       data: {
-//         User_Masters: results.rows[0],
-//       },
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-//   console.log(req.params.id);
-//   console.log(req.body);
-// });
+    res.status(200).json({
+      status: "success",
+      data: {
+        Volunteer: results.rows[0],
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+  console.log(req.params.id);
+  console.log(req.body);
+});
 
-// Delete User Master
+//// Delete Volunteer
 
-// app.delete("/api/v1/userMasters/:um_seq", async (req, res) => {
-//   try {
-//     const results = db.query("DELETE FROM user_master where um_seq = $1", [
-//       req.params.um_seq,
-//     ]);
-//     res.status(204).json({
-//       status: "sucess",
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+app.delete("/api/v1/volunteer/:vol_id", async (req, res) => {
+  try {
+    const results = db.query("DELETE FROM volunteer where vol_id = $1", [
+      req.params.vol_id,
+    ]);
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
 const port = process.env.PORT || 3001;

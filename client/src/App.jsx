@@ -15,12 +15,18 @@ import CustomerList from "./components/Customers/CustomerList";
 import './css/App.css';
 import LoginPage from "./routes/LoginPage";
 import RegisterForm from "./routes/RegisterForm";
+import { VolunteerContextProvider } from "./context/VolunteerContext";
+import AddVolunteer from "./components/Volunteers/AddVolunteer";
+import VolunteerList from "./components/Volunteers/VolunteerList";
+import UpdateVolunteer from "./components/Volunteers/UpdateVolunteer";
+import VolunteerDetailPage from "./components/Volunteers/VolunteerDetailPage";
 const App = () => {
   return (
     <>
     <UMHeader/>
     <div className="content">
     <UserMasterContextProvider>
+    <VolunteerContextProvider>
     <CustomerContextProvider>
       <div className="container">
         <Router>
@@ -30,6 +36,9 @@ const App = () => {
             <Route exact path="/" component={LoginPage} />
             
             <Route exact path="/home" component={Home} />
+            
+
+            {/* User Master Routes */}
             <Route exact path="/userMasters" >
                 <AddUserMaster/>
                 <UserMasterList/>
@@ -39,6 +48,18 @@ const App = () => {
             />
             <Route exact path="/userMasters/:um_seq"
               component={UserMasterDetailPage}
+            />
+
+            {/* Volunteer Routes */}
+            <Route exact path="/volunteers" >
+                <AddVolunteer/>
+                <VolunteerList/>
+            </Route>
+            <Route exact path="/volunteers/:vol_id/update"
+              component={UpdateVolunteer}
+            />
+            <Route exact path="/volunteers/:vol_id"
+              component={VolunteerDetailPage}
             />
 
           <Route exact path="/customers" >
@@ -59,6 +80,7 @@ const App = () => {
       </Router>
       </div>
   </CustomerContextProvider>
+  </VolunteerContextProvider>
   </UserMasterContextProvider>
   </div>
   </>

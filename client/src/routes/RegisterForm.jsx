@@ -1,55 +1,57 @@
+// RegisterForm.jsx
+
 import React from "react";
+import { useHistory } from "react-router-dom";
 import '../css/Home.css'
-import { useParams, useHistory } from "react-router-dom";
-import '../css/register.css'
+import '../css/register.css';
 
 const RegisterForm = () => {
+    const history = useHistory();
 
-    let history = useHistory();
-  function handleLogin() {
-    history.push("/");
-  }
-    return(
-        
-    <div class="signup-form">
-    <form>
-        <h2>Register</h2>
-        {/* <p class="hint-text">Create your account. It's free and only takes a minute.</p> */}
-        <div class="form-group">
-            <div class="row">
-                <div class="col">
-                    <input type="text" class="form-control" name="first_name" placeholder="First Name" required="required"/>
+    const handleLogin = () => {
+        history.push("/");
+    };
+
+    return (
+        <div className="signup-form">
+            <form>
+                <h2>Register</h2>
+                <div className="form-group">
+                    <div className="row">
+                        <div className="col">
+                            <input type="text" className="form-control" name="first_name" placeholder="First Name" required />
+                        </div>
+                        <div className="col">
+                            <input type="text" className="form-control" name="last_name" placeholder="Last Name" required />
+                        </div>
+                    </div>
                 </div>
-                <div class="col">
-                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" required="required"/>
+                <div className="form-group">
+                    <input type="email" className="form-control" name="email" placeholder="Email" required />
                 </div>
+                <div className="form-group">
+                    <input type="password" className="form-control" name="password" placeholder="Password" required />
+                </div>
+                <div className="form-group">
+                    <input type="password" className="form-control" name="confirm_password" placeholder="Confirm Password" required />
+                </div>
+                <div className="form-group">
+                    <label className="form-check-label">
+                        <input type="checkbox" required /> I accept the
+                        <a href="#"> Terms of Use</a> &amp;
+                        <a href="#"> Privacy Policy</a>
+                    </label>
+                </div>
+                <div className="form-group">
+                    <button className="btn btn-lg btn-block" onClick={handleLogin}>Register Now</button>
+                </div>
+            </form>
+            <div className="text-center">
+                Already have an account?
+                <span onClick={handleLogin}> Sign in</span>
             </div>
         </div>
-        <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="Email" required="required"/>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" required="required"/>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required"/>
-        </div>
-        <div class="form-group">
-            <label class="form-check-label">
-                <input type="checkbox" required="required"/> I accept the
-                <a href="#">Terms of Use</a> &amp;
-                <a href="#">Privacy Policy</a>
-            </label>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-lg btn-block" onClick={()=>handleLogin}>Register Now</button>
-        </div>
-    </form>
-    <div class="text-center">Already have an account?
-        <span onClick={() => handleLogin}>Sign in</span>
-    </div>
-</div>
-    )
-}
-export default RegisterForm
+    );
+};
 
+export default RegisterForm;

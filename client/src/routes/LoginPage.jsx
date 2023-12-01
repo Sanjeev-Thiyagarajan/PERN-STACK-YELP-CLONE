@@ -17,9 +17,7 @@ const LoginPage = () => {
                 <div class="row">
                     <div className="col-sm">
                         <label>Staff ID : </label>
-                    </div>
-                    <div className="col-sm">
-                    <input type="text"/>
+                        <input type="text"/>
                     </div>
                 </div>
                 
@@ -27,9 +25,7 @@ const LoginPage = () => {
                 <div class="row">
                     <div className="col-sm">
                         <label>Password : </label>
-                    </div>
-                    <div className="col-sm">
-                    <input type="password" class="form-control" name="password" required="required"/>
+                        <input type="password" class="form-control" name="password" required="required"/>
                     </div>
                 </div>
                 <div>
